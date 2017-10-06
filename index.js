@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 var index = require('./routes/index');
 var books = require('./routes/books');
+var company = require('./routes/company')
 
 app.use(function(req, res, next){
     console.log("In comes a " + req.method + " to " + req.url);
@@ -17,6 +18,7 @@ app.use(function(req, res, next){
 
 app.use('/', index);
 app.use('/books', books);
+app.use('/company', company);
 
 app.use(express.static(__dirname + "/public"));
 
