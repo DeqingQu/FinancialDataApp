@@ -27,14 +27,21 @@ router.get('/edit', function(req, res){
 });
 
 router.post('/edit', function(req, res) {
-
     req.checkBody(companies_models.validation());
     req.getValidationResult().then((errs) => {
-        console.log(errs);
-        if (errs.isEmpty())
-            res.redirect('./');
-        else
-            res.render('user-form.pug', { company: req.body, errs: errs.useFirstErrorOnly().array() });
+        if (errs.isEmpty()) {
+            companies_models.insert(dbcfg, req.body, function(err, results) {
+                res.redirect('./');
+            });
+        }
+        else {
+            console.log(errs.useFirstErrorOnly().array());
+            res.render('companies-form.pug', { company: req.body, errs: errs.useFirstErrorOnly().array() });
+        }
+    })
+    .catch((err) => {
+        console.log(err);
+        res.redirect('./');
     });
 });
 

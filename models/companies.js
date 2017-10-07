@@ -17,7 +17,7 @@ function init(dbcfg, callback) {
 function insert(dbcfg, company, callback) {
     db.stage(dbcfg).execute(
         "insert into companies(company_name, company_category) values(?,?)",
-        [company.company_name, company.company_category]
+        [company['company_name'], company['company_category']]
     ).finale(callback);
 }
 
@@ -28,15 +28,15 @@ function list(dbcfg, callback) {
 
 function validation() {
     return {
-        "name": {
+        "company_name": {
             notEmpty: true,
             errorMessage: "Please enter a valid name"
         },
-        "email": {
+        "company_category": {
             notEmpty: true,
             errorMessage: "Please enter a valid category"
         }
-    }
+    };
 }
 
 module.exports = {
