@@ -22,7 +22,6 @@ function insert(dbcfg, company, callback) {
 }
 
 function list(dbcfg, callback) {
-
   /// issue a single query, then output the result to callback(err, results)
   db.stage(dbcfg).query("select * from companies order by company_id").finale(callback);
 }
