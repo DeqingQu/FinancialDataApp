@@ -4,6 +4,7 @@ var companies_models = require('../models/companies');
 var dbcfg = require('../config/db.json');
 
 //  TODO: add pug views to project
+//  TODO: add validation module to project
 
 companies_models.init(dbcfg, (err, results) => {
   if (err) throw err;
@@ -16,15 +17,10 @@ router.get('/', function(req, res, next) {
       console.log("Output originalUrl" + req.originalUrl);
       return res.redirect(req.originalUrl + '/');
     }
+
     companies_models.list(dbcfg, function(err, results) {
-        var pre_output_str = "<html><a href='edit'>Add New Company</a><br>";
-        var suf_output_str = "</html>";
-        var output_str = pre_output_str;
-        for (var i = 0; i < results.length; i++) {
-          output_str = output_str + results[i].company_name + " / " + results[i].company_category + "<br>";
-        }
-        output_str = output_str + suf_output_str;
-        res.end(output_str);
+        console.log(results);
+        res.render('companies-list.pug', {companies: results});
     });
 });
 
