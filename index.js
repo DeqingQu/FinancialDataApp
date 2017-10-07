@@ -3,6 +3,7 @@ var app = express();
 var path = require('path');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
+var expressValidator = require('express-validator');
 
 var index = require('./routes/index');
 var companies = require('./routes/companies')
@@ -16,6 +17,7 @@ app.set('view engine', 'pug');
 app.use(morgan('short'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressValidator());
 app.use(express.static(__dirname + "/public"));
 
 app.use('/', index);
