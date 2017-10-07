@@ -19,13 +19,12 @@ router.get('/', function(req, res, next) {
     }
 
     companies_models.list(dbcfg, function(err, results) {
-        console.log(results);
         res.render('companies-list.pug', {companies: results});
     });
 });
 
 router.get('/edit', function(req, res){
-    res.end("<html><form method='post'>Name<input type='text' name='company_name'><br>Category<input type='text' name='company_category'><br><input type='submit' value='Submit'></form></html>");
+    res.render('companies-form.pug', { company: null, errs: null });
 });
 
 router.post('/edit', function(req, res) {
