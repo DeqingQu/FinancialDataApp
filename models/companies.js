@@ -22,12 +22,26 @@ function insert(dbcfg, company, callback) {
 }
 
 function list(dbcfg, callback) {
-  /// issue a single query, then output the result to callback(err, results)
-  db.stage(dbcfg).query("select * from companies order by company_id").finale(callback);
+    /// issue a single query, then output the result to callback(err, results)
+    db.stage(dbcfg).query("select * from companies order by company_id").finale(callback);
+}
+
+function validation() {
+    return {
+        "name": {
+            notEmpty: true,
+            errorMessage: "Please enter a valid name"
+        },
+        "email": {
+            notEmpty: true,
+            errorMessage: "Please enter a valid category"
+        }
+    }
 }
 
 module.exports = {
   init: init,
   insert: insert,
-  list: list
+  list: list,
+  validation: validation
 };

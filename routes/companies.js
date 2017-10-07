@@ -23,19 +23,18 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/edit', function(req, res){
-    res.render('companies-form.pug', { company: null, errs: null });
+    res.render('companies-form.pug', { company: {} });
 });
 
 router.post('/edit', function(req, res) {
-    var company_name = req.body.company_name;
-    var company_category = req.body.company_category;
 
-    if (company_name === '' || company_category === '') {
-        return res.end("Insert Fail");
-    }
-
-    companies_models.insert(dbcfg, req.body, function(err, results) {
-        return res.redirect('./');
+    req.checkBody(companies_models.validation());
+    req.getValidationResult().then((errs) => {
+        console.log(errs);
+        if (errs.isEmpty())
+            res.redirect('./');
+        else
+            res.render('user-form.pug', { company: req.body, errs: errs.useFirstErrorOnly().array() });
     });
 });
 
