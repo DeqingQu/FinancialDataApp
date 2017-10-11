@@ -45,6 +45,7 @@ test.describe("testing site with selenium", function () {
                       }
                   });
               });
+              //    there is a bug here, async problem
               expect(isMonster).to.equal(true);
           });
 
