@@ -15,9 +15,10 @@
     "chai": "^4.1.2",
     "mocha": "^4.0.1",
     "morgan": "^1.9.0",
+    "selenium-webdriver": "^3.6.0",
     "superagent": "^3.6.3"
-    },
+  },
   "scripts": {
-      "test": "mocha"
+    "test": "mocha"
   }
 }
