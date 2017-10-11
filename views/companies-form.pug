@@ -10,7 +10,7 @@ block content
       label Category:
       input(name='company_category',value=company['company_category'],type='text',).form-control
     .form-group
-      input(type='submit')
+      input(name='save', type='submit')
           
   - if(errs) errs.forEach(function(err) {
     - // for each error {"param":"<FIELD>",msg:"<MESSAGE>"}
