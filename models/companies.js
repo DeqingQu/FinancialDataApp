@@ -26,6 +26,11 @@ function list(dbcfg, callback) {
     db.stage(dbcfg).query("select * from companies order by company_id").finale(callback);
 }
 
+function del(dbcfg, company_name, callback) {
+    db.stage(dbcfg).execute(
+        "delete from companies where company_name='" + company_name + "'").finale(callback);
+}
+
 function validation() {
     return {
         "company_name": {
@@ -43,5 +48,6 @@ module.exports = {
   init: init,
   insert: insert,
   list: list,
+  del:del,
   validation: validation
 };
