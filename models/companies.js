@@ -26,9 +26,9 @@ function list(dbcfg, callback) {
     db.stage(dbcfg).query("select * from companies order by company_id").finale(callback);
 }
 
-function del(dbcfg, company_name, callback) {
+function del(dbcfg, company_id, callback) {
     db.stage(dbcfg).execute(
-        "delete from companies where company_name='" + company_name + "'").finale(callback);
+        "delete from companies where company_id='" + company_id + "'").finale(callback);
 }
 
 function validation() {

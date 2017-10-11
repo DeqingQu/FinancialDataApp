@@ -4,6 +4,6 @@ block content
   h1 These are companies
   
   for company in (companies ? companies : [])
-    li(company_id=company.company_id) #{company.company_name} / #{company.company_category}
-        a(href='delete') Delete
+    li(company_id=company.company_id) #{company.company_name} / #{company.company_category} 
+        a(href='delete?company_id='+company.company_id) Delete
   a(href='edit') Add company

@@ -45,4 +45,10 @@ router.post('/edit', function(req, res) {
     });
 });
 
+router.get('/delete', function(req, res) {
+    companies_models.del(dbcfg, req.query["company_id"], function(err, results) {
+        res.redirect('./');
+    });
+});
+
 module.exports = router;
