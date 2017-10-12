@@ -15,10 +15,25 @@ function init(dbcfg, callback) {
 }
 
 function insert(dbcfg, company, callback) {
-    db.stage(dbcfg).execute(
+    var stage = db.stage(dbcfg);
+    stage.execute(
         "insert into companies(company_name, company_category) values(?,?)",
         [company['company_name'], company['company_category']]
-    ).finale(callback);
+    );
+    stage.queryInt("select LAST_INSERT_ID()");
+    stage.finale((err, results) => {
+        console.log("output results :" + JSON.stringify(results));  //  insert op return 1, select op return id
+        if (err)
+            return callback(err);
+        else if (results.length != 2)
+            return callback(new Error("Internal error: incorrect number of results returned"));
+        else
+            return callback(err, {
+                "company_id": results[1],
+                "company_name": company['company_name'],
+                "company_category": company['company_category']
+            });
+        });
 }
 
 function list(dbcfg, callback) {
