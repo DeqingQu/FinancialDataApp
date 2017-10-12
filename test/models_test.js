@@ -25,7 +25,7 @@ describe("flushing test data through database", function () {
     });
 
     it("should be able to list a company with company_id", function (done){
-        companies_models.list(dbcfg, testObject["company_id"], (err, result) => {
+        companies_models.listOneCompany(dbcfg, testObject["company_id"], (err, result) => {
             console.log("result is " + JSON.stringify(result));
             expect(err).not.to.exist;
             if (!result) throw new Error("No company found");

@@ -44,7 +44,7 @@ function insert(dbcfg, company, callback) {
 //
 //  description: list all companies in DB, and order by company_id
 //
-function list(dbcfg, callback) {
+function listAllCompanies(dbcfg, callback) {
     /// issue a single query, then output the result to callback(err, results)
     db.stage(dbcfg).query("select * from companies order by company_id").finale(callback);
 }
@@ -53,7 +53,7 @@ function list(dbcfg, callback) {
 //  description: list the company with specified company_id
 //  return callback(err, result), where result is a company object or NULL, not a array
 //
-function list(dbcfg, company_id, callback) {
+function listOneCompany(dbcfg, company_id, callback) {
     /// issue a single query, then output the result to callback(err, results)
     var stage = db.stage(dbcfg);
     stage.query("select * from companies where company_id='" + company_id + "'")
@@ -90,7 +90,8 @@ function validation() {
 module.exports = {
   init: init,
   insert: insert,
-  list: list,
+  listAllCompanies: listAllCompanies,
+  listOneCompany: listOneCompany,
   del:del,
   validation: validation
 };

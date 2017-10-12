@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
       return res.redirect(req.originalUrl + '/');
     }
 
-    companies_models.list(dbcfg, function(err, results) {
+    companies_models.listAllCompanies(dbcfg, function(err, results) {
         res.render('companies-list.pug', {companies: results});
     });
 });
