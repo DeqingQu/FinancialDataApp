@@ -19,14 +19,26 @@ describe("flushing test data through database", function () {
             if (!result) throw new Error("No item id returned");
             if (typeof(result['company_id']) != "number" || !Number.isInteger(result['company_id']))
                 throw new Error("Non-Integer returned on insertation");
+            testObject["company_id"] = result["company_id"];
             done();
         });
     });
 
-    // it("should be able to delete a company", function (done) {
-    //     companies_models.del(dbcfg, testObject["company_name"], (err, results) => {
-    //         expect(err).not.to.exist;
-    //         done();
-    //     });
-    // });
+    it("should be able to list a company with company_id", function (done){
+        companies_models.list(dbcfg, testObject["company_id"], (err, result) => {
+            console.log("result is " + JSON.stringify(result));
+            expect(err).not.to.exist;
+            if (!result) throw new Error("No company found");
+            if (result['company_id'] != testObject['company_id'] || result['company_name'] != testObject["company_name"])
+                throw new Error("id or name is not match when list");
+            done();
+        });
+    });
+
+    it("should be able to delete a company", function (done) {
+        companies_models.del(dbcfg, testObject["company_id"], (err, results) => {
+            expect(err).not.to.exist;
+            done();
+        });
+    });
 });

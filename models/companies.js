@@ -14,6 +14,11 @@ function init(dbcfg, callback) {
         `).finale(callback);
 }
 
+//
+//  description: insert a company to DB
+//  param: company is an object, has attributes 'company_name' and 'company_category'
+//  return callback(err, result), where result is an object, containing 'company_id', 'company_name' and 'company_category'
+//
 function insert(dbcfg, company, callback) {
     var stage = db.stage(dbcfg);
     stage.execute(
@@ -36,9 +41,32 @@ function insert(dbcfg, company, callback) {
         });
 }
 
+//
+//  description: list all companies in DB, and order by company_id
+//
 function list(dbcfg, callback) {
     /// issue a single query, then output the result to callback(err, results)
     db.stage(dbcfg).query("select * from companies order by company_id").finale(callback);
+}
+
+//
+//  description: list the company with specified company_id
+//  return callback(err, result), where result is a company object or NULL, not a array
+//
+function list(dbcfg, company_id, callback) {
+    /// issue a single query, then output the result to callback(err, results)
+    var stage = db.stage(dbcfg);
+    stage.query("select * from companies where company_id='" + company_id + "'")
+    stage.finale((err, results) => {
+        if (err)
+            return callback(err);
+        else if (results.length > 1)
+            return callback(new Error("Internal error: incorrect number of results returned"));
+        else if (results.length == 1)
+            return callback(err, results[0]);
+        else
+            return callback(err, NULL);
+    });
 }
 
 function del(dbcfg, company_id, callback) {
