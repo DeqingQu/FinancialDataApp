@@ -42,8 +42,6 @@ def get_date(date_str: str):
 
 
 def get_links_this_month(links: dict):
-    print('count of links after filter: %d' % len(links))
-
     href_count_in_a_month = 0
     for link in links:
         detail_soup = retrieve(link)
