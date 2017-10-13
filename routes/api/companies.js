@@ -46,12 +46,43 @@ router.post('/', function(req, res) {
         }
     })
     .catch((err) => {
-        res.status(400).end(errs);
+        res.status(400).end(err);
     });
 });
 
 //  modify a company
-
+router.put('/:company_id', function(req, res) {
+    req.checkBody({
+        "company_name": {
+            optional: {
+                notEmpty: true,
+                errorMessage: "Please enter a valid name"
+            }
+        },
+        "company_category": {
+            optional: {
+                notEmpty: true,
+                errorMessage: "Please enter a valid category"
+            }
+        }
+    });
+    req.getValidationResult().then((errs) => {
+        if (errs.isEmpty()) {
+            req.body['company_id'] = parseInt(req.params['company_id']);
+            companies_models.modify(dbcfg, req.body, function(err, result) {
+                res.status(201).end(JSON.stringify(result));
+            });
+        }
+        else {
+            res.status(400).end(errs);
+        }
+    })
+    .catch((err) => {
+        //  validation error
+        console.log("catch error : " + JSON.stringify(err));
+        res.status(400).end(err);
+    });
+});
 
 //  delete a company
 //  return value is empty

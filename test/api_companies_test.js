@@ -7,6 +7,8 @@ var exist_company_id = 5;
 var no_exist_company_id = 1;
 
 var testItem = {'company_name':'test_name', 'company_category':'test_category'};
+var modifyItem1 = {'company_name':'test_name1', 'company_category':'test_category1'};
+var modifyItem2 = {'company_category':'test_category2'};
 
 describe("test site with superagent", () => {
     it("test GET /url/api/companies", (done) => {
@@ -36,6 +38,8 @@ describe("test site with superagent", () => {
 
                 var company = JSON.parse(res.text);
                 testItem['company_id'] = company['company_id'];
+                modifyItem1['company_id'] = company['company_id'];
+                modifyItem2['company_id'] = company['company_id'];
                 expect(company).to.be.an('object').that.is.not.empty;
 
                 done();
@@ -54,6 +58,76 @@ describe("test site with superagent", () => {
                 expect(company['company_id']).to.equal(testItem['company_id']);
                 expect(company['company_name']).to.equal(testItem['company_name']);
                 expect(company['company_category']).to.equal(testItem['company_category']);
+
+                done();
+            });
+    });
+
+    it("test modify the company just created", (done) => {
+        superagent.put(BASE_URL + '/companies/' + modifyItem1['company_id'])
+            .type('form')
+            .send(modifyItem1)
+            .end(function(err, res) {
+                expect(err).to.not.exist;
+                expect(res).to.exist;
+                expect(res.status).to.equal(201);
+                expect(res.text).to.exist;
+
+                var company = JSON.parse(res.text);
+                expect(company['company_id']).to.equal(modifyItem1['company_id']);
+                expect(company['company_name']).to.equal(modifyItem1['company_name']);
+                expect(company['company_category']).to.equal(modifyItem1['company_category']);
+
+                done();
+        });
+    });
+
+    it("test Get the company just modified", (done) => {
+        superagent.get(BASE_URL + '/companies/' + testItem['company_id'])
+            .end(function(err, res) {
+                expect(err).to.not.exist;
+                expect(res).to.exist;
+                expect(res.status).to.equal(200);
+                expect(res.text).to.exist;
+
+                var company = JSON.parse(res.text);
+                expect(company['company_id']).to.equal(modifyItem1['company_id']);
+                expect(company['company_name']).to.equal(modifyItem1['company_name']);
+                expect(company['company_category']).to.equal(modifyItem1['company_category']);
+
+                done();
+            });
+    });
+
+    it("test modify the company with one attribution", (done) => {
+        superagent.put(BASE_URL + '/companies/' + modifyItem2['company_id'])
+            .type('form')
+            .send(modifyItem2)
+            .end(function(err, res) {
+                expect(err).to.not.exist;
+                expect(res).to.exist;
+                expect(res.status).to.equal(201);
+                expect(res.text).to.exist;
+
+                var company = JSON.parse(res.text);
+                expect(company['company_id']).to.equal(modifyItem2['company_id']);
+                expect(company['company_category']).to.equal(modifyItem2['company_category']);
+
+                done();
+        });
+    });
+
+    it("test Get the company just modified with one attribution", (done) => {
+        superagent.get(BASE_URL + '/companies/' + testItem['company_id'])
+            .end(function(err, res) {
+                expect(err).to.not.exist;
+                expect(res).to.exist;
+                expect(res.status).to.equal(200);
+                expect(res.text).to.exist;
+
+                var company = JSON.parse(res.text);
+                expect(company['company_id']).to.equal(modifyItem2['company_id']);
+                expect(company['company_category']).to.equal(modifyItem2['company_category']);
 
                 done();
             });
@@ -85,18 +159,18 @@ describe("test site with superagent", () => {
             });
     });
 
-    // it("test Create company API with missing parameter", (done) => {
-    //     superagent.post(BASE_URL + '/companies/')
-    //         .type('form')
-    //         .send({'company_name':'test'})
-    //         .end(function(err, res) {
-    //             expect(err).to.exist;
-    //             expect(res).to.exist;
-    //             expect(res.status).to.equal(400);
-    //             expect(res.text).to.exist;
-    //             console.log(res.text);
-    //             done();
-    //         });
-    // });
+    it("test Create company API with missing parameter", (done) => {
+        superagent.post(BASE_URL + '/companies/')
+            .type('form')
+            .send({'company_name':'test'})
+            .end(function(err, res) {
+                expect(err).to.exist;
+                expect(res).to.exist;
+                expect(res.status).to.equal(400);
+                expect(res.text).to.exist;
+                console.log(res.text);
+                done();
+            });
+    });
 
 });
