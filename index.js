@@ -7,6 +7,7 @@ var expressValidator = require('express-validator');
 
 var index = require('./routes/index');
 var companies = require('./routes/companies')
+var api_companies = require('./routes/api/companies')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,6 +23,7 @@ app.use(express.static(__dirname + "/public"));
 
 app.use('/', index);
 app.use('/companies', companies);
+app.use('/api/companies', api_companies)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

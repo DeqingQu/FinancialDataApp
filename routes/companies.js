@@ -3,10 +3,8 @@ var router = express.Router();
 var companies_models = require('../models/companies');
 var dbcfg = require('../config/db.json');
 
-//  TODO: add validation module to project
-
 companies_models.init(dbcfg, (err, results) => {
-  if (err) throw err;
+    if (err) throw err;
 });
 
 /* GET home page. */
