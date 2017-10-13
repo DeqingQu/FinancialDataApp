@@ -56,6 +56,28 @@ describe("flushing test data through database", function () {
         });
     });
 
+    it("should be able to update a company with one attribution", function (done) {
+        delete modifyObject['company_category'];
+        modifyObject['company_name'] = "Facebook";
+        companies_models.modify(dbcfg, modifyObject, (err, result) => {
+            expect(err).not.to.exist;
+            if (!result) throw new Error("No item id returned");
+            if (typeof(result['company_id']) != "number" || !Number.isInteger(result['company_id']))
+                    throw new Error("Non-Integer returned on insertation");
+            done();
+        });
+    });
+
+    it("should be able to check the modified company with one attribution", function (done){
+        companies_models.listOneCompany(dbcfg, testObject["company_id"], (err, result) => {
+            expect(err).not.to.exist;
+            if (!result) throw new Error("No company found");
+            if (result['company_id'] != testObject['company_id'] || result['company_name'] != modifyObject["company_name"])
+                throw new Error("id, name or category is not match after modification");
+            done();
+        });
+    });
+
     it("should be able to delete a company", function (done) {
         companies_models.del(dbcfg, testObject["company_id"], (err, results) => {
             expect(err).not.to.exist;

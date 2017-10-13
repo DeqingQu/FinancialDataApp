@@ -42,16 +42,28 @@ function insert(dbcfg, company, callback) {
 }
 
 //  description: modify the company with specified company_id
-//  param: company is an object, has attributes 'company_id', 'company_name' and 'company_category'
+//  param: company is an object, must has attribute 'company_id',  may has attributes of 'company_name' or 'company_category'
 //  return callback(err, result), where result is an object, containing 'company_id', 'company_name' and 'company_category'
 //
 function modify(dbcfg, company, callback) {
+    //  input param validation
+    if(!('company_id' in company)) {
+        return callback(new Error('No company_id'));
+    }
+    if(!('company_name' in company) && !('company_category' in company)) {
+        return callback(new Error('No company_name and No company_category'));
+    }
+    //  construct sql
+    var update_sql = "UPDATE companies SET ";
+    if('company_name' in company)
+        update_sql += "company_name='" + company['company_name'] + "',";
+    if('company_category' in company)
+        update_sql += "company_category='" + company['company_category'] + "',";
+    update_sql = update_sql.slice(0, update_sql.length-1);
+    update_sql += " WHERE company_id='" + company['company_id'] + "'";
+    //  execute sql
     var stage = db.stage(dbcfg);
-    stage.execute(
-        "UPDATE companies SET company_name='" + company['company_name'] +
-        "', company_category='" + company['company_category'] +
-        "' where company_id='" + company['company_id'] + "'"
-    );
+    stage.execute(update_sql);
     stage.finale((err, results) => {
         console.log("update results :" + JSON.stringify(results));
         if (err)

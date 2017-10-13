@@ -50,6 +50,9 @@ router.post('/', function(req, res) {
     });
 });
 
+//  modify a company
+
+
 //  delete a company
 //  return value is empty
 router.delete('/:company_id', function(req, res) {
