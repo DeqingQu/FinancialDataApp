@@ -52,20 +52,7 @@ router.post('/', function(req, res) {
 
 //  modify a company
 router.put('/:company_id', function(req, res) {
-    req.checkBody({
-        "company_name": {
-            optional: {
-                notEmpty: true,
-                errorMessage: "Please enter a valid name"
-            }
-        },
-        "company_category": {
-            optional: {
-                notEmpty: true,
-                errorMessage: "Please enter a valid category"
-            }
-        }
-    });
+    req.checkBody(companies_models.optional_validation);
     req.getValidationResult().then((errs) => {
         if (errs.isEmpty()) {
             req.body['company_id'] = parseInt(req.params['company_id']);

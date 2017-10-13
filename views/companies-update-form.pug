@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  h1 Update Company
+  form(method='post')
+    .form-group
+      label Name:
+      input(name='company_name',value=company['company_name'],type='text',autofocus).form-control
+    .form-group
+      label Category:
+      input(name='company_category',value=company['company_category'],type='text',).form-control
+    .form-group
+      input(name='save', type='submit')
+          
+  - if(errs) errs.forEach(function(err) {
+    - // for each error {"param":"<FIELD>",msg:"<MESSAGE>"}
+    - //   we will change the preceding tag (the label)
+    - //   to indicate the error
+    - // 1. Get a reference to the field, in the DOM
+    - // 2. Get a reference to its preceding sibling, a label.
+    - // 3. Change the label's text to indicate the error.
+    script.
+      document.forms[0]["#{err.param}"].previousSibling.innerHTML="#{err.msg}";
+      //alert("#{err.msg}");
+  - });

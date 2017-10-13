@@ -20,11 +20,11 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.get('/edit', function(req, res){
-    res.render('companies-form.pug', { company: {} });
+router.get('/create', function(req, res){
+    res.render('companies-create-form.pug', { company: {} });
 });
 
-router.post('/edit', function(req, res) {
+router.post('/create', function(req, res) {
     req.checkBody(companies_models.validation());
     req.getValidationResult().then((errs) => {
         if (errs.isEmpty()) {
@@ -34,12 +34,18 @@ router.post('/edit', function(req, res) {
         }
         else {
             console.log(errs.useFirstErrorOnly().array());
-            res.render('companies-form.pug', { company: req.body, errs: errs.useFirstErrorOnly().array() });
+            res.render('companies-create-form.pug', { company: req.body, errs: errs.useFirstErrorOnly().array() });
         }
     })
     .catch((err) => {
         console.log(err);
         res.redirect('./');
+    });
+});
+
+router.get('/update', function(req, res) {
+    companies_models.listOneCompany(dbcfg, req.query["company_id"], function(err, result) {
+        res.render('companies-update-form.pug', { company: result });
     });
 });
 

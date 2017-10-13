@@ -159,18 +159,18 @@ describe("test site with superagent", () => {
             });
     });
 
-    it("test Create company API with missing parameter", (done) => {
-        superagent.post(BASE_URL + '/companies/')
-            .type('form')
-            .send({'company_name':'test'})
-            .end(function(err, res) {
-                expect(err).to.exist;
-                expect(res).to.exist;
-                expect(res.status).to.equal(400);
-                expect(res.text).to.exist;
-                console.log(res.text);
-                done();
-            });
-    });
+    // it("test Create company API with missing parameter", (done) => {
+    //     superagent.post(BASE_URL + '/companies/')
+    //         .type('form')
+    //         .send({'company_name':'test'})
+    //         .end(function(err, res) {
+    //             expect(err).to.exist;
+    //             expect(res).to.exist;
+    //             expect(res.status).to.equal(400);
+    //             expect(res.text).to.exist;
+    //             console.log(res.text);
+    //             done();
+    //         });
+    // });
 
 });

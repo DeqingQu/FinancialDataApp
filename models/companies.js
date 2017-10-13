@@ -127,6 +127,23 @@ function validation() {
     };
 }
 
+function optional_validation() {
+    return {
+        "company_name": {
+            optional: {
+                notEmpty: true,
+                errorMessage: "Please enter a valid name"
+            }
+        },
+        "company_category": {
+            optional: {
+                notEmpty: true,
+                errorMessage: "Please enter a valid category"
+            }
+        }
+    };
+}
+
 module.exports = {
   init: init,
   insert: insert,
@@ -134,5 +151,6 @@ module.exports = {
   listAllCompanies: listAllCompanies,
   listOneCompany: listOneCompany,
   del:del,
-  validation: validation
+  validation: validation,
+  optional_validation: optional_validation
 };
