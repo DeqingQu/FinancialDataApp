@@ -41,6 +41,31 @@ function insert(dbcfg, company, callback) {
         });
 }
 
+//  description: modify the company with specified company_id
+//  param: company is an object, has attributes 'company_id', 'company_name' and 'company_category'
+//  return callback(err, result), where result is an object, containing 'company_id', 'company_name' and 'company_category'
+//
+function modify(dbcfg, company, callback) {
+    var stage = db.stage(dbcfg);
+    stage.execute(
+        "UPDATE companies SET company_name='" + company['company_name'] +
+        "', company_category='" + company['company_category'] +
+        "' where company_id='" + company['company_id'] + "'"
+    );
+    stage.finale((err, results) => {
+        console.log("update results :" + JSON.stringify(results));
+        if (err)
+            return callback(err);
+        else
+            return callback(err, {
+                "company_id": company['company_id'],
+                "company_name": company['company_name'],
+                "company_category": company['company_category']
+            });
+        });
+}
+
+
 //
 //  description: list all companies in DB, and order by company_id
 //
@@ -69,6 +94,9 @@ function listOneCompany(dbcfg, company_id, callback) {
     });
 }
 
+//
+//  description: delete the company with specified company_id
+//
 function del(dbcfg, company_id, callback) {
     db.stage(dbcfg).execute(
         "delete from companies where company_id='" + company_id + "'").finale(callback);
@@ -90,6 +118,7 @@ function validation() {
 module.exports = {
   init: init,
   insert: insert,
+  modify: modify,
   listAllCompanies: listAllCompanies,
   listOneCompany: listOneCompany,
   del:del,

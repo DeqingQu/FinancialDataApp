@@ -3,6 +3,7 @@ const expect = require('chai').expect;
 var dbcfg = require('../config/db.json');
 
 var testObject = { "company_name": "OSU", "company_category": "University" };
+var modifyObject = { "company_name": "Amazon", "company_category": "ElectricalBusiness" };
 
 describe("flushing test data through database", function () {
 
@@ -20,6 +21,7 @@ describe("flushing test data through database", function () {
             if (typeof(result['company_id']) != "number" || !Number.isInteger(result['company_id']))
                 throw new Error("Non-Integer returned on insertation");
             testObject["company_id"] = result["company_id"];
+            modifyObject['company_id'] = result['company_id'];
             done();
         });
     });
@@ -30,6 +32,26 @@ describe("flushing test data through database", function () {
             if (!result) throw new Error("No company found");
             if (result['company_id'] != testObject['company_id'] || result['company_name'] != testObject["company_name"])
                 throw new Error("id or name is not match when list");
+            done();
+        });
+    });
+
+    it("should be able to update a company", function (done) {
+        companies_models.modify(dbcfg, modifyObject, (err, result) => {
+            expect(err).not.to.exist;
+            if (!result) throw new Error("No item id returned");
+            if (typeof(result['company_id']) != "number" || !Number.isInteger(result['company_id']))
+                    throw new Error("Non-Integer returned on insertation");
+            done();
+        });
+    });
+
+    it("should be able to check the modified company", function (done){
+        companies_models.listOneCompany(dbcfg, testObject["company_id"], (err, result) => {
+            expect(err).not.to.exist;
+            if (!result) throw new Error("No company found");
+            if (result['company_id'] != testObject['company_id'] || result['company_name'] != modifyObject["company_name"] || result['company_category'] != modifyObject['company_category'])
+                throw new Error("id, name or category is not match after modification");
             done();
         });
     });
