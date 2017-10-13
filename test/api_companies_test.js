@@ -19,9 +19,11 @@ describe("test site with superagent", () => {
 
                 var companies = JSON.parse(res.text);
                 expect(companies).to.be.an.instanceof(Array);
+                
                 done();
             });
     });
+
     it("test GET /url/api/companies/{id} with existed Id", (done) => {
         superagent.get(BASE_URL + '/companies/' + exist_company_id)
             .end(function(err, res) {
@@ -34,6 +36,7 @@ describe("test site with superagent", () => {
                 expect(company).to.have.property('company_id');
                 expect(company).to.have.property('company_name');
                 expect(company).to.have.property('company_category');
+
                 done();
             });
     });
@@ -48,11 +51,12 @@ describe("test site with superagent", () => {
 
                 var company = JSON.parse(res.text);
                 expect(company).to.be.an('object').that.is.empty;
+
                 done();
             });
     });
 
-    it("test POST /url/api/companies with {'company_name':'', 'company_category':''}", (done) => {
+    it("test Create company API", (done) => {
         superagent.post(BASE_URL + '/companies/')
             .type('form')
             .send(testItem)
@@ -63,8 +67,26 @@ describe("test site with superagent", () => {
                 expect(res.text).to.exist;
 
                 var company = JSON.parse(res.text);
-                console.log("result is " + res.text);
+                testItem['company_id'] = company['company_id'];
                 expect(company).to.be.an('object').that.is.not.empty;
+
+                done();
+            });
+    });
+
+    it("test Get the company just created", (done) => {
+        superagent.get(BASE_URL + '/companies/' + testItem['company_id'])
+            .end(function(err, res) {
+                expect(err).to.not.exist;
+                expect(res).to.exist;
+                expect(res.status).to.equal(200);
+                expect(res.text).to.exist;
+
+                var company = JSON.parse(res.text);
+                expect(company['company_id']).to.equal(testItem['company_id']);
+                expect(company['company_name']).to.equal(testItem['company_name']);
+                expect(company['company_category']).to.equal(testItem['company_category']);
+
                 done();
             });
     });

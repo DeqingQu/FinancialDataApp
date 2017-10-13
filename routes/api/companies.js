@@ -25,6 +25,8 @@ router.get('/:company_id', function(req, res) {
     });
 });
 
+//  create a company_id
+//  return value is a JSON Object
 router.post('/', function(req, res) {
     // make sure we end with a slash, so that relative links point *into* this router
     if (req.originalUrl.slice(-1) != '/') {
