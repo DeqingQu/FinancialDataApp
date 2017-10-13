@@ -65,7 +65,7 @@ function listOneCompany(dbcfg, company_id, callback) {
         else if (results.length == 1)
             return callback(err, results[0]);
         else
-            return callback(err, NULL);
+            return callback(err, new Object());
     });
 }
 
