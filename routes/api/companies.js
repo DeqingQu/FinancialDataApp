@@ -25,4 +25,29 @@ router.get('/:company_id', function(req, res) {
     });
 });
 
+router.post('/', function(req, res) {
+    // make sure we end with a slash, so that relative links point *into* this router
+    if (req.originalUrl.slice(-1) != '/') {
+        console.log("Output originalUrl" + req.originalUrl);
+        return res.redirect(req.originalUrl + '/');
+    }
+
+    req.checkBody(companies_models.validation());
+    req.getValidationResult().then((errs) => {
+        if (errs.isEmpty()) {
+            companies_models.insert(dbcfg, req.body, function(err, result) {
+                res.end(JSON.stringify(result))
+            });
+        }
+        else {
+            res.status(400);
+            res.send(errs);
+        }
+    })
+    .catch((err) => {
+        res.status(400);
+        res.send(errs);
+    });
+});
+
 module.exports = router;
