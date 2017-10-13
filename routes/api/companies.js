@@ -19,13 +19,13 @@ router.get('/', function(req, res) {
 //  query one company with specified id
 //  return value is a JSON Object or empty Object
 router.get('/:company_id', function(req, res) {
-    var company_id = parseInt(req.params.company_id);
+    var company_id = parseInt(req.params['company_id']);
     companies_models.listOneCompany(dbcfg, company_id, function(err, result) {
         res.end(JSON.stringify(result));
     });
 });
 
-//  create a company_id
+//  create a company
 //  return value is a JSON Object
 router.post('/', function(req, res) {
     // make sure we end with a slash, so that relative links point *into* this router
@@ -38,17 +38,24 @@ router.post('/', function(req, res) {
     req.getValidationResult().then((errs) => {
         if (errs.isEmpty()) {
             companies_models.insert(dbcfg, req.body, function(err, result) {
-                res.end(JSON.stringify(result))
+                res.status(201).end(JSON.stringify(result));
             });
         }
         else {
-            res.status(400);
-            res.send(errs);
+            res.status(400).end(errs);
         }
     })
     .catch((err) => {
-        res.status(400);
-        res.send(errs);
+        res.status(400).end(errs);
+    });
+});
+
+//  delete a company
+//  return value is empty
+router.delete('/:company_id', function(req, res) {
+    var company_id = parseInt(req.params['company_id']);
+    companies_models.del(dbcfg, company_id, function (err, results) {
+        res.status(204).end();
     });
 });
 

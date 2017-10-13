@@ -23,7 +23,7 @@ app.use(express.static(__dirname + "/public"));
 
 app.use('/', index);
 app.use('/companies', companies);
-app.use('/api/companies', api_companies)
+app.use('/api/companies', api_companies);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

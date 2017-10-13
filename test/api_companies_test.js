@@ -19,38 +19,6 @@ describe("test site with superagent", () => {
 
                 var companies = JSON.parse(res.text);
                 expect(companies).to.be.an.instanceof(Array);
-                
-                done();
-            });
-    });
-
-    it("test GET /url/api/companies/{id} with existed Id", (done) => {
-        superagent.get(BASE_URL + '/companies/' + exist_company_id)
-            .end(function(err, res) {
-                expect(err).to.not.exist;
-                expect(res).to.exist;
-                expect(res.status).to.equal(200);
-                expect(res.text).to.exist;
-
-                var company = JSON.parse(res.text);
-                expect(company).to.have.property('company_id');
-                expect(company).to.have.property('company_name');
-                expect(company).to.have.property('company_category');
-
-                done();
-            });
-    });
-
-    it("test GET /url/api/companies/{id} with non-existed Id", (done) => {
-        superagent.get(BASE_URL + '/companies/' + no_exist_company_id)
-            .end(function(err, res) {
-                expect(err).to.not.exist;
-                expect(res).to.exist;
-                expect(res.status).to.equal(200);
-                expect(res.text).to.exist;
-
-                var company = JSON.parse(res.text);
-                expect(company).to.be.an('object').that.is.empty;
 
                 done();
             });
@@ -63,7 +31,7 @@ describe("test site with superagent", () => {
             .end(function(err, res) {
                 expect(err).to.not.exist;
                 expect(res).to.exist;
-                expect(res.status).to.equal(200);
+                expect(res.status).to.equal(201);
                 expect(res.text).to.exist;
 
                 var company = JSON.parse(res.text);
@@ -90,4 +58,45 @@ describe("test site with superagent", () => {
                 done();
             });
     });
+
+    it("test Delete a company with id", (done) => {
+        superagent.delete(BASE_URL + '/companies/' + testItem['company_id'])
+            .end(function(err, res) {
+                expect(err).to.not.exist;
+                expect(res).to.exist;
+                expect(res.status).to.equal(204);
+
+                done();
+            });
+    });
+
+    it("test Get a company which has been deleted", (done) => {
+        superagent.get(BASE_URL + '/companies/' + testItem['company_id'])
+            .end(function(err, res) {
+                expect(err).to.not.exist;
+                expect(res).to.exist;
+                expect(res.status).to.equal(200);
+                expect(res.text).to.exist;
+
+                var company = JSON.parse(res.text);
+                expect(company).to.be.an('object').that.is.empty;
+
+                done();
+            });
+    });
+
+    // it("test Create company API with missing parameter", (done) => {
+    //     superagent.post(BASE_URL + '/companies/')
+    //         .type('form')
+    //         .send({'company_name':'test'})
+    //         .end(function(err, res) {
+    //             expect(err).to.exist;
+    //             expect(res).to.exist;
+    //             expect(res.status).to.equal(400);
+    //             expect(res.text).to.exist;
+    //             console.log(res.text);
+    //             done();
+    //         });
+    // });
+
 });
