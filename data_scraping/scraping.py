@@ -8,6 +8,7 @@ BASE_URL = "https://en.wikipedia.org"
 SEARCH_URL = "https://en.wikipedia.org/"
 
 
+#   retrieve data from URL
 def retrieve(url: str):
     """retrieves content at the specified url"""
     print("*", url)
