@@ -49,6 +49,26 @@ router.get('/update', function(req, res) {
     });
 });
 
+router.post('/update', function(req, res) {
+    req.checkBody(companies_models.optional_validation());
+    req.getValidationResult().then((errs) => {
+        if (errs.isEmpty()) {
+            req.body['company_id'] = req.query["company_id"];
+            companies_models.modify(dbcfg, req.body, function(err, results) {
+                res.redirect('./');
+            });
+        }
+        else {
+            console.log(errs.useFirstErrorOnly().array());
+            res.render('companies-create-form.pug', { company: req.body, errs: errs.useFirstErrorOnly().array() });
+        }
+    })
+    .catch((err) => {
+        console.log(err);
+        res.redirect('./');
+    });
+});
+
 router.get('/delete', function(req, res) {
     companies_models.del(dbcfg, req.query["company_id"], function(err, results) {
         res.redirect('./');
