@@ -9,7 +9,9 @@ function init(dbcfg, callback) {
             create table if not exists companies(
             company_id MEDIUMINT NOT NULL AUTO_INCREMENT,
             company_name VARCHAR(64) NOT NULL,
+            ticker_symbol VARCHAR(64) NOT NULL,
             company_category VARCHAR(64) NOT NULL,
+            related_companies VARCHAR(255),
             primary key(company_id))
         `).finale(callback);
 }
@@ -22,8 +24,8 @@ function init(dbcfg, callback) {
 function insert(dbcfg, company, callback) {
     var stage = db.stage(dbcfg);
     stage.execute(
-        "insert into companies(company_name, company_category) values(?,?)",
-        [company['company_name'], company['company_category']]
+        "INSERT INTO companies(company_name, ticker_symbol, company_category) VALUES(?,?, ?)",
+        [company['company_name'], company['ticker_symbol'], company['company_category']]
     );
     stage.queryInt("select LAST_INSERT_ID()");
     stage.finale((err, results) => {
@@ -36,6 +38,7 @@ function insert(dbcfg, company, callback) {
             return callback(err, {
                 "company_id": results[1],
                 "company_name": company['company_name'],
+                "ticker_symbol": company['ticker_symbol'],
                 "company_category": company['company_category']
             });
         });
@@ -50,13 +53,15 @@ function modify(dbcfg, company, callback) {
     if(!('company_id' in company)) {
         return callback(new Error('No company_id'));
     }
-    if(!('company_name' in company) && !('company_category' in company)) {
+    if(!('company_name' in company) && !('company_category' in company) && !('ticker_symbol' in company)) {
         return callback(new Error('No company_name and No company_category'));
     }
     //  construct sql
     var update_sql = "UPDATE companies SET ";
     if('company_name' in company)
         update_sql += "company_name='" + company['company_name'] + "',";
+    if('ticker_symbol' in company)
+        update_sql += "ticker_symbol='" + company['ticker_symbol'] + "',";
     if('company_category' in company)
         update_sql += "company_category='" + company['company_category'] + "',";
     update_sql = update_sql.slice(0, update_sql.length-1);
@@ -72,6 +77,7 @@ function modify(dbcfg, company, callback) {
             return callback(err, {
                 "company_id": company['company_id'],
                 "company_name": company['company_name'],
+                "ticker_symbol": company['ticker_symbol'],
                 "company_category": company['company_category']
             });
         });
@@ -120,6 +126,10 @@ function validation() {
             notEmpty: true,
             errorMessage: "Please enter a valid name"
         },
+        "ticker_symbol": {
+            notEmpty: true,
+            errorMessage: "Please enter a valid ticker symbol"
+        },
         "company_category": {
             notEmpty: true,
             errorMessage: "Please enter a valid category"
@@ -133,6 +143,12 @@ function optional_validation() {
             optional: {
                 notEmpty: true,
                 errorMessage: "Please enter a valid name"
+            }
+        },
+        "ticker_symbol": {
+            optional: {
+                notEmpty: true,
+                errorMessage: "Please enter a valid ticker symbol"
             }
         },
         "company_category": {

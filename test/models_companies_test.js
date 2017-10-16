@@ -2,8 +2,8 @@ var companies_models = require('../models/companies');
 const expect = require('chai').expect;
 var dbcfg = require('../config/db.json');
 
-var testObject = { "company_name": "OSU", "company_category": "University" };
-var modifyObject = { "company_name": "Amazon", "company_category": "ElectricalBusiness" };
+var testObject = { "company_name": "OSU", "ticker_symbol": "NASDAQ: OSU", "company_category": "University" };
+var modifyObject = { "company_name": "Amazon", "ticker_symbol": "NASDAQ: AMZN", "company_category": "ElectricalBusiness" };
 
 describe("flushing test data through database", function () {
 
@@ -78,10 +78,10 @@ describe("flushing test data through database", function () {
         });
     });
 
-    it("should be able to delete a company", function (done) {
-        companies_models.del(dbcfg, testObject["company_id"], (err, results) => {
-            expect(err).not.to.exist;
-            done();
-        });
-    });
+    // it("should be able to delete a company", function (done) {
+    //     companies_models.del(dbcfg, testObject["company_id"], (err, results) => {
+    //         expect(err).not.to.exist;
+    //         done();
+    //     });
+    // });
 });
