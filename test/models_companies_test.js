@@ -78,10 +78,10 @@ describe("flushing test data through database", function () {
         });
     });
 
-    // it("should be able to delete a company", function (done) {
-    //     companies_models.del(dbcfg, testObject["company_id"], (err, results) => {
-    //         expect(err).not.to.exist;
-    //         done();
-    //     });
-    // });
+    it("should be able to delete a company", function (done) {
+        companies_models.del(dbcfg, testObject["company_id"], (err, results) => {
+            expect(err).not.to.exist;
+            done();
+        });
+    });
 });

@@ -24,7 +24,7 @@ function init(dbcfg, callback) {
 function insert(dbcfg, company, callback) {
     var stage = db.stage(dbcfg);
     stage.execute(
-        "INSERT INTO companies(company_name, ticker_symbol, company_category) VALUES(?,?, ?)",
+        "INSERT INTO companies(company_name, ticker_symbol, company_category) VALUES(?,?,?)",
         [company['company_name'], company['ticker_symbol'], company['company_category']]
     );
     stage.queryInt("select LAST_INSERT_ID()");
@@ -58,17 +58,25 @@ function modify(dbcfg, company, callback) {
     }
     //  construct sql
     var update_sql = "UPDATE companies SET ";
-    if('company_name' in company)
-        update_sql += "company_name='" + company['company_name'] + "',";
-    if('ticker_symbol' in company)
-        update_sql += "ticker_symbol='" + company['ticker_symbol'] + "',";
-    if('company_category' in company)
-        update_sql += "company_category='" + company['company_category'] + "',";
+    var params = [];
+    if('company_name' in company) {
+        update_sql += "company_name=?,";
+        params.push(company['company_name']);
+    }
+    if('ticker_symbol' in company) {
+        update_sql += "ticker_symbol=?,";
+        params.push(company['ticker_symbol']);
+    }
+    if('company_category' in company) {
+        update_sql += "company_category=?,";
+        params.push(company['company_category']);
+    }
     update_sql = update_sql.slice(0, update_sql.length-1);
-    update_sql += " WHERE company_id='" + company['company_id'] + "'";
+    update_sql += " WHERE company_id=" + company['company_id'];
+
     //  execute sql
     var stage = db.stage(dbcfg);
-    stage.execute(update_sql);
+    stage.execute(update_sql, params);
     stage.finale((err, results) => {
         console.log("update results :" + JSON.stringify(results));
         if (err)

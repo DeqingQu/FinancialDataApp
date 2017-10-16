@@ -50,11 +50,12 @@ router.get('/update', function(req, res) {
 });
 
 router.post('/update', function(req, res) {
-    req.checkBody(companies_models.optional_validation());
+    req.checkBody(companies_models.validation());
     req.getValidationResult().then((errs) => {
         if (errs.isEmpty()) {
             req.body['company_id'] = req.query["company_id"];
             companies_models.modify(dbcfg, req.body, function(err, results) {
+                console.log("error in update : " + err);
                 res.redirect('./');
             });
         }
