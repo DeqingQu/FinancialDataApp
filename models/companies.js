@@ -8,9 +8,9 @@ function init(dbcfg, callback) {
     db.stage(dbcfg).execute(`
             create table if not exists companies(
             company_id MEDIUMINT NOT NULL AUTO_INCREMENT,
-            company_name VARCHAR(64) NOT NULL,
-            ticker_symbol VARCHAR(64) NOT NULL,
-            company_category VARCHAR(64) NOT NULL,
+            company_name VARCHAR(255) NOT NULL,
+            ticker_symbol VARCHAR(255) NOT NULL,
+            company_category VARCHAR(255) NOT NULL,
             related_companies VARCHAR(255),
             primary key(company_id))
         `).finale(callback);
