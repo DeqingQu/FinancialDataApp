@@ -83,8 +83,8 @@ def insert_related_companies_in_db(companies: list):
 
     for company in companies:
         db.execute("INSERT INTO companies(company_name, ticker_symbol) VALUES(?,?)", [company.name, company.symbol])
+        connection.commit()  # required, as mysql generally doesn't autocommit
 
-    connection.commit()  # required, as mysql generally doesn't autocommit
     connection.close()
 
     print("Insert related companies successfully")
