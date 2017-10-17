@@ -9,6 +9,7 @@ block content
         tr
           th Company Name
           th Ticker Symbol
+          th Related Companies
           th Update
           th Delete
         each company, i in companies
@@ -16,6 +17,7 @@ block content
             td #{company.company_name}
             td 
               a(href='https://finance.google.com/finance?q='+company.ticker_symbol) #{company.ticker_symbol}
+            td #{company.related_companies}
             td
               a(href='update?company_id='+company.company_id) Update
             td

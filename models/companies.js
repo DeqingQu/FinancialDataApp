@@ -10,7 +10,6 @@ function init(dbcfg, callback) {
             company_id MEDIUMINT NOT NULL AUTO_INCREMENT,
             company_name VARCHAR(255) NOT NULL,
             ticker_symbol VARCHAR(255) NOT NULL,
-            company_category VARCHAR(255) NOT NULL,
             related_companies VARCHAR(255),
             primary key(company_id))
         `).finale(callback);
