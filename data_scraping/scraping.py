@@ -5,10 +5,11 @@ import json
 import mysql.connector
 
 BASE_URL = "https://finance.google.com"
-ticker_symbol = "NYSE:F"#"NASDAQ:TSLA"#"HKG:0966"
+ticker_symbol = "NYSE:TSLA"
 
 related_companies = []
 stock_market = ['NASDAQ', 'NYSE', 'HKG']
+
 
 class Company:
     def __init__(self, name, symbol):
@@ -30,7 +31,7 @@ def retrieve(url: str):
 
 
 #   find related companies from Google Financial
-def find_related_companies(symbol: str, base_url: str):
+def find_related_companies(symbol: str, base_url: str, market: list):
 
     companies = []
     url = base_url + '/finance?q=' + symbol
@@ -52,7 +53,7 @@ def find_related_companies(symbol: str, base_url: str):
             for related_company in json_result['company']['related']['rows']:
                 company_name = related_company['values'][1]
                 company_symbol = "{}:{}".format(related_company['values'][8], related_company['values'][0])
-                if company_symbol != symbol and related_company['values'][8] in stock_market:
+                if company_symbol != symbol and related_company['values'][8] in market:
                     companies.append(Company(company_name, company_symbol))
     return companies
 
@@ -82,9 +83,12 @@ def insert_related_companies_in_db(companies: list):
     db = connection.cursor(prepared=True)
 
     for company in companies:
-        db.execute("INSERT INTO companies(company_name, ticker_symbol) VALUES(?,?)", [company.name, company.symbol])
-        connection.commit()  # required, as mysql generally doesn't autocommit
+        try:
+            db.execute("INSERT INTO companies(company_name, ticker_symbol) VALUES(?,?)", [company.name, company.symbol])
+        except mysql.connector.Error as err:
+            print(err)
 
+    connection.commit()  # required, as mysql generally doesn't autocommit
     connection.close()
 
     print("Insert related companies successfully")
@@ -95,7 +99,7 @@ def print_related_companies(companies: list):
         company.print_company()
 
 
-related_companies = find_related_companies(ticker_symbol, BASE_URL)
+related_companies = find_related_companies(ticker_symbol, BASE_URL, stock_market)
 print_related_companies(related_companies)
 update_related_companies_in_db(ticker_symbol, related_companies)
 insert_related_companies_in_db(related_companies)
