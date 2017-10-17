@@ -1,8 +1,8 @@
 import requests
 from time import sleep
 from bs4 import BeautifulSoup
-from datetime import datetime
 import json
+import mysql.connector
 
 BASE_URL = "https://finance.google.com"
 
@@ -53,7 +53,26 @@ def find_related_companies(symbol: str, base_url: str):
     return companies
 
 
+#   database operation: update 'related_companies' in table 'company'
+def update_related_companies_in_db(symbol: str, companies: list):
+
+    symbols = "["
+    for related_company in companies:
+        symbols += "\"{}\",".format(related_company.symbol)
+    symbols = symbols[:len(symbols)-1]
+    symbols += "]"
+
+    connection = mysql.connector.connect(host="localhost", port=3306, user="demo", passwd="demo", db="semdemo")
+    db = connection.cursor(prepared=True)
+    db.execute("UPDATE companies SET related_companies=? WHERE ticker_symbol=?", [symbols, ticker_symbol])
+    connection.commit()  # required, as mysql generally doesn't autocommit
+    connection.close()
+
+    print("Update related companies successfully")
+
+
+
+
 related_companies = find_related_companies(ticker_symbol, BASE_URL)
-for company in related_companies:
-    print("name : {}, symbol : {}".format(company.name, company.symbol))
+update_related_companies_in_db(ticker_symbol, related_companies)
 
