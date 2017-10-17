@@ -2,8 +2,9 @@ import requests
 from time import sleep
 from bs4 import BeautifulSoup
 from datetime import datetime
+import json
 
-BASE_URL = "https://finance.google.com/finance?q="
+BASE_URL = "https://finance.google.com"
 
 SEARCH_URL = "https://en.wikipedia.org/"
 TARGET_URL = "https://en.wikipedia.org/wiki/Python_(programming_language)"
@@ -20,6 +21,21 @@ def retrieve(url: str):
     r = requests.get(url, verify=False)  # get the HTML; ignore SSL errors (present on this particular site)
     soup = BeautifulSoup(r.text, "lxml")  # parse the HTML
     return soup
+
+
+def find_related_companies(symbol: str, base_url: str):
+    url = base_url + '/finance?q=' + symbol
+    #   get the link to related companies
+    soup = retrieve(url)
+    #   li.fjfe-nav-sub
+    for li in soup.find_all('li', {"class": "fjfe-nav-sub"}):
+        if li.text == "Related companies":
+            related_companies_url = base_url + li.findChildren('a')[0].get('href')
+    #   get the content of related companies from the new url
+    soup = retrieve(related_companies_url)
+    for script in soup.find_all('script'):
+        print(script)
+        print('\n')
 
 
 def filter_links(url: str, base_url: str, search_url: str):
@@ -61,5 +77,7 @@ def get_links_this_month(links: dict):
     print("Result %d" % href_count_in_a_month)
 
 
-links_filtered = filter_links(TARGET_URL, BASE_URL, SEARCH_URL)
-get_links_this_month(links_filtered)
+# links_filtered = filter_links(TARGET_URL, BASE_URL, SEARCH_URL)
+# get_links_this_month(links_filtered)
+
+find_related_companies(ticker_symbol, BASE_URL)
