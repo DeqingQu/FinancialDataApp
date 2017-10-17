@@ -9,7 +9,7 @@ BASE_URL = "https://finance.google.com"
 SEARCH_URL = "https://en.wikipedia.org/"
 TARGET_URL = "https://en.wikipedia.org/wiki/Python_(programming_language)"
 
-ticker_symbol = "HKG:0966"
+ticker_symbol = "NASDAQ:TSLA"#"HKG:0966"
 related_companies = []
 
 
@@ -34,8 +34,14 @@ def find_related_companies(symbol: str, base_url: str):
     #   get the content of related companies from the new url
     soup = retrieve(related_companies_url)
     for script in soup.find_all('script'):
-        print(script)
-        print('\n')
+        if script.text.find('google.finance.data') > 0:
+            # print(script.text)
+            index_start = script.text.find('google.finance.data')
+            index_end = script.text.find('google.finance.data.numberFormat')
+            print("index_start {} and index end {}".format(index_start, index_end))
+            result = script.text[index_start + len('google.finance.data = '):index_end-2]
+            json_result = json.loads(result)
+            print(json_result['company']['related']['rows'])
 
 
 def filter_links(url: str, base_url: str, search_url: str):
