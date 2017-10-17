@@ -2,8 +2,8 @@ var companies_models = require('../models/companies');
 const expect = require('chai').expect;
 var dbcfg = require('../config/db.json');
 
-var testObject = { "company_name": "OSU", "ticker_symbol": "NASDAQ: OSU", "company_category": "University" };
-var modifyObject = { "company_name": "Amazon", "ticker_symbol": "NASDAQ: AMZN", "company_category": "ElectricalBusiness" };
+var testObject = { "company_name": "OSU", "ticker_symbol": "NASDAQ: OSU" };
+var modifyObject = { "company_name": "Amazon", "ticker_symbol": "NASDAQ: AMZN" };
 
 describe("flushing test data through database", function () {
 
@@ -50,8 +50,8 @@ describe("flushing test data through database", function () {
         companies_models.listOneCompany(dbcfg, testObject["company_id"], (err, result) => {
             expect(err).not.to.exist;
             if (!result) throw new Error("No company found");
-            if (result['company_id'] != testObject['company_id'] || result['company_name'] != modifyObject["company_name"] || result['company_category'] != modifyObject['company_category'])
-                throw new Error("id, name or category is not match after modification");
+            if (result['company_id'] != testObject['company_id'] || result['company_name'] != modifyObject["company_name"])
+                throw new Error("id or name is not match after modification");
             done();
         });
     });

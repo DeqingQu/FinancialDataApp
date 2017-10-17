@@ -3,9 +3,13 @@ from time import sleep
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-TARGET_URL = "https://en.wikipedia.org/wiki/Python_(programming_language)"
-BASE_URL = "https://en.wikipedia.org"
+BASE_URL = "https://finance.google.com/finance?q="
+
 SEARCH_URL = "https://en.wikipedia.org/"
+TARGET_URL = "https://en.wikipedia.org/wiki/Python_(programming_language)"
+
+ticker_symbol = "HKG:0966"
+related_companies = []
 
 
 #   retrieve data from URL

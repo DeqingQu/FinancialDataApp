@@ -24,8 +24,8 @@ function init(dbcfg, callback) {
 function insert(dbcfg, company, callback) {
     var stage = db.stage(dbcfg);
     stage.execute(
-        "INSERT INTO companies(company_name, ticker_symbol, company_category) VALUES(?,?,?)",
-        [company['company_name'], company['ticker_symbol'], company['company_category']]
+        "INSERT INTO companies(company_name, ticker_symbol) VALUES(?,?)",
+        [company['company_name'], company['ticker_symbol']]
     );
     stage.queryInt("select LAST_INSERT_ID()");
     stage.finale((err, results) => {
@@ -38,8 +38,7 @@ function insert(dbcfg, company, callback) {
             return callback(err, {
                 "company_id": results[1],
                 "company_name": company['company_name'],
-                "ticker_symbol": company['ticker_symbol'],
-                "company_category": company['company_category']
+                "ticker_symbol": company['ticker_symbol']
             });
         });
 }
@@ -53,8 +52,8 @@ function modify(dbcfg, company, callback) {
     if(!('company_id' in company)) {
         return callback(new Error('No company_id'));
     }
-    if(!('company_name' in company) && !('company_category' in company) && !('ticker_symbol' in company)) {
-        return callback(new Error('No company_name and No company_category'));
+    if(!('company_name' in company) && !('ticker_symbol' in company)) {
+        return callback(new Error('No company_name and No ticker_symbol'));
     }
     //  construct sql
     var update_sql = "UPDATE companies SET ";
@@ -66,10 +65,6 @@ function modify(dbcfg, company, callback) {
     if('ticker_symbol' in company) {
         update_sql += "ticker_symbol=?,";
         params.push(company['ticker_symbol']);
-    }
-    if('company_category' in company) {
-        update_sql += "company_category=?,";
-        params.push(company['company_category']);
     }
     update_sql = update_sql.slice(0, update_sql.length-1);
     update_sql += " WHERE company_id=" + company['company_id'];
@@ -85,8 +80,7 @@ function modify(dbcfg, company, callback) {
             return callback(err, {
                 "company_id": company['company_id'],
                 "company_name": company['company_name'],
-                "ticker_symbol": company['ticker_symbol'],
-                "company_category": company['company_category']
+                "ticker_symbol": company['ticker_symbol']
             });
         });
 }
@@ -137,10 +131,6 @@ function validation() {
         "ticker_symbol": {
             notEmpty: true,
             errorMessage: "Please enter a valid ticker symbol"
-        },
-        "company_category": {
-            notEmpty: true,
-            errorMessage: "Please enter a valid category"
         }
     };
 }
@@ -157,12 +147,6 @@ function optional_validation() {
             optional: {
                 notEmpty: true,
                 errorMessage: "Please enter a valid ticker symbol"
-            }
-        },
-        "company_category": {
-            optional: {
-                notEmpty: true,
-                errorMessage: "Please enter a valid category"
             }
         }
     };
