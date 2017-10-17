@@ -9,7 +9,7 @@ function init(dbcfg, callback) {
             create table if not exists companies(
             company_id MEDIUMINT NOT NULL AUTO_INCREMENT,
             company_name VARCHAR(255) NOT NULL,
-            ticker_symbol VARCHAR(255) NOT NULL,
+            ticker_symbol VARCHAR(255) NOT NULL UNIQUE,
             related_companies VARCHAR(255),
             primary key(company_id))
         `).finale(callback);
