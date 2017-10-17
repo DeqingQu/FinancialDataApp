@@ -5,10 +5,10 @@ import json
 import mysql.connector
 
 BASE_URL = "https://finance.google.com"
-ticker_symbol = "NASDAQ:TSLA"#"HKG:0966"
+ticker_symbol = "NYSE:F"#"NASDAQ:TSLA"#"HKG:0966"
 
 related_companies = []
-
+stock_market = ['NASDAQ', 'NYSE', 'HKG']
 
 class Company:
     def __init__(self, name, symbol):
@@ -52,7 +52,7 @@ def find_related_companies(symbol: str, base_url: str):
             for related_company in json_result['company']['related']['rows']:
                 company_name = related_company['values'][1]
                 company_symbol = "{}:{}".format(related_company['values'][8], related_company['values'][0])
-                if company_symbol != symbol:
+                if company_symbol != symbol and related_company['values'][8] in stock_market:
                     companies.append(Company(company_name, company_symbol))
     return companies
 
