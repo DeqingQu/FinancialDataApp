@@ -1,11 +1,27 @@
 extends layout
 
 block content
-  h1 These are companies
-  
-  for company in (companies ? companies : [])
-    li(company_id=company.company_id) #{company.company_name} / #{company.company_category} /
-        a(href='https://finance.google.com/finance?q='+company.ticker_symbol) #{company.ticker_symbol}
-        a(href='update?company_id='+company.company_id) Update
-        a(href='delete?company_id='+company.company_id) Delete
+  div
+    h1 Company List 
+  div
+    table(class='table' class='table-striped')
+      tbody
+        tr
+          th Company Name
+          th Ticker Symbol
+          th Category
+          th Update
+          th Delete
+        each company, i in companies
+          tr
+            td #{company.company_name}
+            td 
+              a(href='https://finance.google.com/finance?q='+company.ticker_symbol) #{company.ticker_symbol}
+            td #{company.company_category}
+            td
+              a(href='update?company_id='+company.company_id) Update
+            td
+              a(href='delete?company_id='+company.company_id) Delete
   a(href='create') Add company
+      
+  
