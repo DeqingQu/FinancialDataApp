@@ -6,9 +6,9 @@ var BASE_URL = 'http://localhost:3000/api';
 var exist_company_id = 5;
 var no_exist_company_id = 1;
 
-var testItem = {'company_name':'test_name', 'company_category':'test_category'};
-var modifyItem1 = {'company_name':'test_name1', 'company_category':'test_category1'};
-var modifyItem2 = {'company_category':'test_category2'};
+var testItem = {'company_name':'test_name', 'ticker_symbol':'ticker_symbol'};
+var modifyItem1 = {'company_name':'test_name1', 'ticker_symbol':'ticker_symbol1'};
+var modifyItem2 = {'ticker_symbol':'ticker_symbol2'};
 
 describe("test site with superagent", () => {
     it("test GET /url/api/companies", (done) => {
@@ -57,7 +57,7 @@ describe("test site with superagent", () => {
                 var company = JSON.parse(res.text);
                 expect(company['company_id']).to.equal(testItem['company_id']);
                 expect(company['company_name']).to.equal(testItem['company_name']);
-                expect(company['company_category']).to.equal(testItem['company_category']);
+                expect(company['ticker_symbol']).to.equal(testItem['ticker_symbol']);
 
                 done();
             });
@@ -93,7 +93,7 @@ describe("test site with superagent", () => {
                 var company = JSON.parse(res.text);
                 expect(company['company_id']).to.equal(modifyItem1['company_id']);
                 expect(company['company_name']).to.equal(modifyItem1['company_name']);
-                expect(company['company_category']).to.equal(modifyItem1['company_category']);
+                expect(company['ticker_symbol']).to.equal(modifyItem1['ticker_symbol']);
 
                 done();
             });
@@ -111,7 +111,7 @@ describe("test site with superagent", () => {
 
                 var company = JSON.parse(res.text);
                 expect(company['company_id']).to.equal(modifyItem2['company_id']);
-                expect(company['company_category']).to.equal(modifyItem2['company_category']);
+                expect(company['ticker_symbol']).to.equal(modifyItem2['ticker_symbol']);
 
                 done();
         });
@@ -127,7 +127,7 @@ describe("test site with superagent", () => {
 
                 var company = JSON.parse(res.text);
                 expect(company['company_id']).to.equal(modifyItem2['company_id']);
-                expect(company['company_category']).to.equal(modifyItem2['company_category']);
+                expect(company['ticker_symbol']).to.equal(modifyItem2['ticker_symbol']);
 
                 done();
             });
