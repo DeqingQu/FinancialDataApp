@@ -5,7 +5,7 @@ import json
 import mysql.connector
 
 BASE_URL = "https://finance.google.com"
-ticker_symbol = "NYSE:TSLA"
+ticker_symbol = "HKG:0966"
 
 related_companies = []
 stock_market = ['NASDAQ', 'NYSE', 'HKG']
@@ -63,8 +63,8 @@ def update_related_companies_in_db(symbol: str, companies: list):
 
     symbols = "["
     for related_company in companies:
-        symbols += "\"{}\",".format(related_company.symbol)
-    symbols = symbols[:len(symbols)-1]
+        symbols += "\"{}\", ".format(related_company.symbol)
+    symbols = symbols[:len(symbols)-2]
     symbols += "]"
 
     connection = mysql.connector.connect(host="localhost", port=3306, user="demo", passwd="demo", db="semdemo")

@@ -2,7 +2,7 @@ extends layout
 
 block content
   div
-    h1 Company List 
+    h1 Company List   
   div
     table(class='table' class='table-striped')
       tbody
@@ -15,7 +15,7 @@ block content
         each company, i in companies
           tr
             td #{company.company_name}
-            td 
+            td
               a(href='https://finance.google.com/finance?q='+company.ticker_symbol) #{company.ticker_symbol}
             td #{company.related_companies}
             td
