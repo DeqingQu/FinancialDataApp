@@ -16,12 +16,12 @@ router.get('/', function(req, res, next) {
     }
 
     companies_models.listAllCompanies(dbcfg, function(err, results) {
-        res.render('companies-list.pug', {companies: results});
+        res.render('companies-list.pug', {companies: results, title: 'Financial Data Project'});
     });
 });
 
 router.get('/create', function(req, res){
-    res.render('companies-create-form.pug', { company: {} });
+    res.render('companies-create-form.pug', {company: {}, title: 'Financial Data Project'});
 });
 
 router.post('/create', function(req, res) {
@@ -34,7 +34,7 @@ router.post('/create', function(req, res) {
         }
         else {
             console.log(errs.useFirstErrorOnly().array());
-            res.render('companies-create-form.pug', { company: req.body, errs: errs.useFirstErrorOnly().array() });
+            res.render('companies-create-form.pug', {company: req.body, errs: errs.useFirstErrorOnly().array(), title: 'Financial Data Project'});
         }
     })
     .catch((err) => {
@@ -45,7 +45,7 @@ router.post('/create', function(req, res) {
 
 router.get('/update', function(req, res) {
     companies_models.listOneCompany(dbcfg, req.query["company_id"], function(err, result) {
-        res.render('companies-update-form.pug', { company: result });
+        res.render('companies-update-form.pug', {company: result, title: 'Financial Data Project'});
     });
 });
 
@@ -61,7 +61,7 @@ router.post('/update', function(req, res) {
         }
         else {
             console.log(errs.useFirstErrorOnly().array());
-            res.render('companies-create-form.pug', { company: req.body, errs: errs.useFirstErrorOnly().array() });
+            res.render('companies-create-form.pug', {company: req.body, errs: errs.useFirstErrorOnly().array(), title: 'Financial Data Project'});
         }
     })
     .catch((err) => {

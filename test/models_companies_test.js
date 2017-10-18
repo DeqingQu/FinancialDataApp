@@ -57,7 +57,7 @@ describe("flushing test data through database", function () {
     });
 
     it("should be able to update a company with one attribution", function (done) {
-        delete modifyObject['company_category'];
+        delete modifyObject['ticker_symbol'];
         modifyObject['company_name'] = "Facebook";
         companies_models.modify(dbcfg, modifyObject, (err, result) => {
             expect(err).not.to.exist;
