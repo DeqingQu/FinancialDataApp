@@ -2,7 +2,7 @@
 function deleteCompany(company_id){
 	$.ajax({
 		type: "delete",
-		url:"api/companies/" + company_id,
+		url:"http://localhost:3000/api/companies/" + company_id,
 		async: true,
 		dataType:"json",
 		success: function(data) {
@@ -21,10 +21,10 @@ function deleteCompany(company_id){
 
 /*INIT*/
 $('document').ready(function(){
-	// //bind click event for add class button
-	// $('.openAddClassFormDialog').click(function(){
-	// 	$.formBox.openDialog('addClassForm');
-	// });
+	//bind click event for add class button
+	$('#delete_company_85').click(function(){
+		deleteCompany(85);
+	});
 	// //Show classes
 	// getClassList();
 	//
