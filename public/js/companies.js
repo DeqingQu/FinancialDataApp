@@ -16,9 +16,30 @@ function deleteCompany(company_id){
 	});
 };
 
+function listAllCompanies() {
+	$.ajax({
+		type: "get",
+		url:"http://localhost:3000/api/companies/",
+		async: true,
+		dataType:"json",
+		success: function(data) {
+			alert(JSON.stringify(data));
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			alert(XMLHttpRequest.status);
+			alert(XMLHttpRequest.readyState);
+			alert(textStatus);
+		}
+	});
+}
+
 /*INIT*/
 $('document').ready(function(){
-	//bind click event for delete_company class button
+
+	//	get all companies
+	listAllCompanies();
+
+	//	bind click event for delete_company class button
 	$('.company_delete_btn').click(function(){
 		// get company_id from id of DOM, id = 'delete_company_%d'
 		var company_id = $(this).attr('id').substring("company_delete_btn_".length);
