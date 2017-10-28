@@ -18,9 +18,11 @@ function deleteCompany(company_id){
 
 /*INIT*/
 $('document').ready(function(){
-	//bind click event for add class button
-	$('#delete_company_86').click(function(){
-		deleteCompany(86);
+	//bind click event for delete_company class button
+	$('.delete_company').click(function(){
+		// get company_id from id of DOM, id = 'delete_company_%d'
+		var company_id = $(this).attr('id').substring("delete_company_".length);
+		deleteCompany(company_id);
 	});
 	// //Show classes
 	// getClassList();
