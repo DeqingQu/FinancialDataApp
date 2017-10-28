@@ -19,10 +19,11 @@ function deleteCompany(company_id){
 /*INIT*/
 $('document').ready(function(){
 	//bind click event for delete_company class button
-	$('.delete_company').click(function(){
+	$('.company_delete_btn').click(function(){
 		// get company_id from id of DOM, id = 'delete_company_%d'
-		var company_id = $(this).attr('id').substring("delete_company_".length);
-		var msg = "Are you sure delete " + company_id;
+		var company_id = $(this).attr('id').substring("company_delete_btn_".length);
+		var company_name = $(this).parent().parent().children('.company_name').text();
+		var msg = "Are you sure delete " + company_name;
 		if (confirm(msg) == true) {
 			deleteCompany(company_id);
 			return true;

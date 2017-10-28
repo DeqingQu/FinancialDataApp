@@ -17,14 +17,14 @@ block content
           th Delete
         each company, i in companies
           tr
-            td #{company.company_name}
+            td(class='company_name') #{company.company_name}
             td
               a(href='https://finance.google.com/finance?q='+company.ticker_symbol) #{company.ticker_symbol}
             td #{company.related_companies}
             td
               a(href='update?company_id='+company.company_id) Update
             td
-              a(class='delete_company' id='delete_company_'+company.company_id href='#') Delete
+              a(class='company_delete_btn' id='company_delete_btn_'+company.company_id href='#') Delete
   a(href='create') Add company
       
   
