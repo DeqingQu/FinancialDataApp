@@ -6,10 +6,7 @@ function deleteCompany(company_id){
 		async: true,
 		dataType:"json",
 		success: function(data) {
-			if(data.ERROR==null){
-                console.log('Delete in ajax');
-			}else
-				openToast(data.ERROR);
+			window.location.reload();
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			alert(XMLHttpRequest.status);
@@ -22,8 +19,8 @@ function deleteCompany(company_id){
 /*INIT*/
 $('document').ready(function(){
 	//bind click event for add class button
-	$('#delete_company_85').click(function(){
-		deleteCompany(85);
+	$('#delete_company_86').click(function(){
+		deleteCompany(86);
 	});
 	// //Show classes
 	// getClassList();
