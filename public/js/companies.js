@@ -22,7 +22,14 @@ $('document').ready(function(){
 	$('.delete_company').click(function(){
 		// get company_id from id of DOM, id = 'delete_company_%d'
 		var company_id = $(this).attr('id').substring("delete_company_".length);
-		deleteCompany(company_id);
+		var msg = "Are you sure delete " + company_id;
+		if (confirm(msg) == true) {
+			deleteCompany(company_id);
+			return true;
+		}
+		else {
+			return false;
+		}
 	});
 	// //Show classes
 	// getClassList();
