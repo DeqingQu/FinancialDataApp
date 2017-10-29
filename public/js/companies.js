@@ -23,7 +23,20 @@ function listAllCompanies() {
 		async: true,
 		dataType:"json",
 		success: function(data) {
-			alert(JSON.stringify(data));
+			for (i in data) {
+				var company = data[i];
+				var company_name_td = "<td class='company_name'>" + company['company_name'] + "</td>";
+				var company_symbol_td = "<td><a href='https://finance.google.com/finance?q="
+					+ company['ticker_symbol'] + "'>" + company['ticker_symbol'] + "</a></td>";
+				var company_related_td = "<td>" + company['related_companies'] + "</td>";
+				var update_td = "<td><a href='update?company_id=" + company['company_id'] + "'</a>Update</td>";
+				var delete_td = "<td><a class='company_delete_btn' id=company_delete_btn_"
+					+ company['company_id'] + " href='#'>Delete</a></td>";
+				$('#company_tbody').append("<tr>" + company_name_td + company_symbol_td
+					+ company_related_td + update_td + delete_td + "</tr>")
+			}
+
+			bindDeleteFunction();
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			alert(XMLHttpRequest.status);
@@ -33,12 +46,7 @@ function listAllCompanies() {
 	});
 }
 
-/*INIT*/
-$('document').ready(function(){
-
-	//	get all companies
-	listAllCompanies();
-
+function bindDeleteFunction() {
 	//	bind click event for delete_company class button
 	$('.company_delete_btn').click(function(){
 		// get company_id from id of DOM, id = 'delete_company_%d'
@@ -53,6 +61,14 @@ $('document').ready(function(){
 			return false;
 		}
 	});
+}
+
+/*INIT*/
+$('document').ready(function(){
+
+	//	get all companies
+	listAllCompanies();
+
 	// //Show classes
 	// getClassList();
 	//
