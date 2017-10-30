@@ -1,1 +1,16 @@
-h1 { padding-top: 20px; padding-bottom: 20px;}
+h1 {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.parent {
+    display: table;
+}
+.center-vertical-left{
+    width: 300px;
+}
+.center-vertical-right{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: right;
+    width: 100%;
+}

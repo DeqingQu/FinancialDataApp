@@ -5,8 +5,11 @@ block scripts
   link(rel="stylesheet", href="../stylesheets/style.css")
 
 block content
-  div
-    h1 Company List
+  div(class='parent')
+    div(class='center-vertical-left')
+      h1 Company List
+    div(class='center-vertical-right')
+      a(href='create') add company
   div
     table(class='table' class='table-striped')
       tbody(id='company_tbody')
@@ -26,6 +29,5 @@ block content
   //-             a(href='update?company_id='+company.company_id) Update
   //-           td
   //-             a(class='company_delete_btn' id='company_delete_btn_'+company.company_id href='#') Delete
-  a(href='create') Add company
       
   
