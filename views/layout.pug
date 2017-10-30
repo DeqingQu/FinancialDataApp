@@ -8,5 +8,14 @@ html
     script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js",integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1",crossorigin="anonymous")
     block scripts
 body
+    header(class='navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar')
+      div(class='navbar-nav-scroll')
+        ul(class='navbar-nav bd-navbar-nav flex-row')
+          li(class='nav-item')
+            a(class='nav-link active' href='/') Home
+          li(class='nav-item')
+            a(class='nav-link' href='/') Companies
+          li(class='nav-item')
+            a(class='nav-link' href='/') Blog
     .container 
       block content
