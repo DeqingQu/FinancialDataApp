@@ -1,9 +1,10 @@
-h1 {
+.container {
     padding-top: 20px;
-    padding-bottom: 20px;
 }
-.parent {
+
+.table-title {
     display: table;
+    padding-bottom: 20px;
 }
 .center-vertical-left{
     width: 300px;

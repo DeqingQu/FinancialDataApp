@@ -2,7 +2,7 @@
 function deleteCompany(company_id){
 	$.ajax({
 		type: "delete",
-		url:"http://localhost:3000/api/companies/" + company_id,
+		url:"/api/companies/" + company_id,
 		async: true,
 		dataType:"json",
 		success: function(data) {
@@ -19,7 +19,7 @@ function deleteCompany(company_id){
 function listAllCompanies() {
 	$.ajax({
 		type: "get",
-		url:"http://localhost:3000/api/companies/",
+		url:"/api/companies/",
 		async: true,
 		dataType:"json",
 		success: function(data) {
@@ -68,17 +68,4 @@ $('document').ready(function(){
 
 	//	get all companies
 	listAllCompanies();
-
-	// //Show classes
-	// getClassList();
-	//
-	// //Add class (bind click event for post class button)
-	// $('#dialog .addClassForm .submitBtn').click(function(){
-	// 	if($('#dialog .addClassForm form').checkForm()==true){
-	// 		//alert(JSON.stringify($('#dialog .addClassForm form').serializeForm()));			//For test
-	// 		createNewClass();
-	// 		$('#dialog .addClassForm .close').trigger('click');
-	// 		getClassList();
-	// 	}
-	// });
 });
